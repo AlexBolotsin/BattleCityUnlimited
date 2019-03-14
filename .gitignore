@@ -1,0 +1,10 @@
+Intermediate
+Binaries
+Build
+Saved
+.vs
+*.sln
+*.suo
+*.VC.db
+*.VC.opendb
+
