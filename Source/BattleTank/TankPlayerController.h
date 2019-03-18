@@ -17,5 +17,21 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	
 	ATank* GetControlledTank() const;
 
+	void Tick(float deltaTime) override;
+
 	void BeginPlay() override;
+
+	void AimTowardCrosshair() const;
+
+	bool GetSightRayHitLocation(FVector& hitLocation) const;
+
+	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
+
+	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const;
+
+	UPROPERTY(EditAnywhere)
+		FVector2D CrossHairPosition;
+
+	UPROPERTY(EditAnywhere)
+		float LookCheckLength;
 };
