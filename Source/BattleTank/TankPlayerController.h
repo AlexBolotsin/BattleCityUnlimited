@@ -29,9 +29,9 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		FVector2D CrossHairPosition;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		float LookCheckLength;
 };

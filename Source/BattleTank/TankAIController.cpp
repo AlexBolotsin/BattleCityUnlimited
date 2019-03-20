@@ -4,34 +4,18 @@
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
 
-ATank* ATankAIController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (GetPlayerTank())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("GOT PLAYER"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("COULDNT FIND PLAYA"));
-	}
-}
-
-ATank* ATankAIController::GetPlayerTank() const
-{
-	return Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 }
 
 void ATankAIController::Tick(float DeltaTime)
 {
-	if (auto playerTank = GetPlayerTank())
+	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	auto ControlledTank = Cast<ATank>(GetPawn());
+	if (PlayerTank && ControlledTank)
 	{
-		GetControlledTank()->AimAt(playerTank->GetActorLocation());
+		ControlledTank->AimAt(PlayerTank->GetActorLocation());
+		ControlledTank->Fire();
 	}
 }
