@@ -15,6 +15,7 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	ATank* GetControlledTank() const;
 
 	void Tick(float deltaTime) override;
@@ -28,6 +29,10 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
 
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const;
+
+protected:
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+		void FoundAimingCOmponent(UTankAimingComponent* AimCompRef);
 
 	UPROPERTY(EditDefaultsOnly)
 		FVector2D CrossHairPosition;

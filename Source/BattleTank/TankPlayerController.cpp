@@ -18,6 +18,9 @@ void ATankPlayerController::Tick(float deltaTime)
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	if (AimingComponent)
+		FoundAimingCOmponent(AimingComponent);
 }
 
 void ATankPlayerController::AimTowardCrosshair() const

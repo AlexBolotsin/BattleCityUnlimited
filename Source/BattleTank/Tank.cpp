@@ -2,6 +2,8 @@
 
 #include "Tank.h"
 #include "Projectile.h"
+#include "TankMovementComponent.h"
+#include "TankAimingComponent.h"
 #include "Engine/StaticMeshSocket.h"
 
 // Sets default values
@@ -9,15 +11,6 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
-	AimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("AimingComponent"));
-}
-
-// Called when the game starts or when spawned
-void ATank::BeginPlay()
-{
-	Super::BeginPlay();
-	
 }
 
 // Called to bind functionality to input
@@ -29,23 +22,16 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::AimAt(FVector HitLocation)
 {
-	AimingComponent->AimAt(HitLocation, LaunchSpeed);
-}
-
-void ATank::SetBarrelReference(UBarrelComponent* Barrel)
-{
-	AimingComponent->SetBarrelReference(Barrel);
-	BarrelComponent = Barrel;
-}
-
-void ATank::SetTurretReference(UTurretComponent* Turret)
-{
-	AimingComponent->SetTurretReference(Turret);
+	UTankAimingComponent* aiming = FindComponentByClass<UTankAimingComponent>();
+	if (aiming)
+		aiming->AimAt(HitLocation, LaunchSpeed);
 }
 
 void ATank::Fire()
 {
 	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
+
+	UBarrelComponent* BarrelComponent = FindComponentByClass<UBarrelComponent>();
 
 	if (!BarrelComponent || !isReloaded)
 		return;

@@ -35,19 +35,15 @@ void UTankAimingComponent::AimAt(FVector AimLocation, float LaunchSpeed)
 	if (UGameplayStatics::SuggestProjectileVelocity(this, LaunchVelocity, StartLocation,
 		AimLocation, LaunchSpeed, false, 0.f, 0.f, ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
+		FiringState = EFiringState::Aiming;
 		MoveBarrel(LaunchVelocity.GetSafeNormal());
 	}
 }
 
-void UTankAimingComponent::SetBarrelReference(UBarrelComponent* Barrel)
+void UTankAimingComponent::Initialise(UTurretComponent* turret, UBarrelComponent* barrel)
 {
-	BarrelComponent = Barrel;
-}
-
-
-void UTankAimingComponent::SetTurretReference(UTurretComponent* Turret)
-{
-	TurretComponent = Turret;
+	TurretComponent = turret;
+	BarrelComponent = barrel;
 }
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection)
