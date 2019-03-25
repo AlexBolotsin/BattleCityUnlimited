@@ -8,7 +8,6 @@
 #include "Tank.generated.h"
 
 class AProjectile;
-class UTankMovementComponent;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -20,13 +19,8 @@ public:
 	ATank();
 
 protected:
-	UPROPERTY(BlueprintReadOnly, Category = "Setup")
-	UTankMovementComponent* MovementComponent;
 
-public:	
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+public:
 	void AimAt(FVector HitLocation);
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
