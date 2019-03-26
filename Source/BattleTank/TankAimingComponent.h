@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "BarrelComponent.h"
 #include "TurretComponent.h"
+#include "Projectile.h"
 #include "TankAimingComponent.generated.h"
 
 UENUM()
@@ -34,15 +35,32 @@ public:
 		void Initialise(UTurretComponent* turret, UBarrelComponent* barrel);
 
 	// Called every frame
-	void AimAt(FVector AimLocation, float LaunchSpeed);
+	void AimAt(FVector AimLocation);
 	void MoveBarrel(FVector AimDirection);
+
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+		void Fire();
+
+	void UpdateFireState();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "FiringState")
 		EFiringState FiringState = EFiringState::Locked;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float LaunchSpeed = 4000.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		TSubclassOf<AProjectile> ProjectileBP;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		double ReloadTime = 3.f;
+
+	double LastFireTime = 0.f;
+
 private:
 	UBarrelComponent* BarrelComponent = nullptr;
 	UTurretComponent* TurretComponent = nullptr;
 
+	bool FinishedAiming = false;
 };

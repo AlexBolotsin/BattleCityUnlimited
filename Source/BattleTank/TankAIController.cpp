@@ -3,6 +3,7 @@
 #include "TankAIController.h"
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
+#include "TankAimingComponent.h"
 
 void ATankAIController::BeginPlay()
 {
@@ -11,12 +12,17 @@ void ATankAIController::BeginPlay()
 
 void ATankAIController::Tick(float DeltaTime)
 {
-	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	auto ControlledTank = Cast<ATank>(GetPawn());
+	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
+	auto ControlledTank = GetPawn();
 	if (PlayerTank && ControlledTank)
 	{
 		MoveToActor(PlayerTank, 3000);
-		ControlledTank->AimAt(PlayerTank->GetActorLocation());
-		ControlledTank->Fire();
+
+		UTankAimingComponent* aiming = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+		if (aiming)
+		{
+			aiming->AimAt(PlayerTank->GetActorLocation());
+			aiming->Fire();
+		}
 	}
 }
