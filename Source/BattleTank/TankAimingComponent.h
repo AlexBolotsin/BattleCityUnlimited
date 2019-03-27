@@ -43,6 +43,8 @@ public:
 
 	void UpdateFireState();
 
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction);
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "FiringState")
 		EFiringState FiringState = EFiringState::Locked;
@@ -63,4 +65,5 @@ private:
 	UTurretComponent* TurretComponent = nullptr;
 
 	bool FinishedAiming = false;
+	bool isReloaded = false;
 };

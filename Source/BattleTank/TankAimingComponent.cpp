@@ -9,7 +9,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
 }
@@ -21,13 +21,13 @@ void UTankAimingComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+	LastFireTime = FPlatformTime::Seconds();
 }
 
 void UTankAimingComponent::UpdateFireState()
 {
 	EFiringState newState = EFiringState::Reloading;
-	if ((FPlatformTime::Seconds() - LastFireTime) <= ReloadTime)
+	if (!isReloaded)
 	{
 		newState = EFiringState::Reloading;
 	}
@@ -44,6 +44,12 @@ void UTankAimingComponent::UpdateFireState()
 	{
 		FiringState = newState;
 	}
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+	isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
+	UpdateFireState();
 }
 
 void UTankAimingComponent::AimAt(FVector AimLocation)
@@ -84,8 +90,6 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
-
 	if (!BarrelComponent || !isReloaded || !FinishedAiming)
 		return;
 

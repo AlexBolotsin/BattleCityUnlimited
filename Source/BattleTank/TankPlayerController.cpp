@@ -31,7 +31,6 @@ void ATankPlayerController::AimTowardCrosshair() const
 		UTankAimingComponent* aiming = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 		if (aiming)
 		{
-			aiming->UpdateFireState();
 			aiming->AimAt(HitLocation);
 		}
 	}
